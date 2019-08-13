@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.mynotes.NoteActivity">
+    <item
+        android:id="@+id/item_cancel"
+        android:orderInCategory="101"
+        android:title="Cancel" />
+    <item
+        android:id="@+id/action_send_mail"
+        android:orderInCategory="103"
+        android:title="@string/send_as_mail"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_next"
+        android:orderInCategory="102"
+        android:title="Next" />
+
+</menu>
