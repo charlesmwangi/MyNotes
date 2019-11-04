@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -169,6 +170,16 @@ public class NoteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //ref the menu item
+        MenuItem item = menu.findItem(R.id.action_next);
+        //check if we are at the end of the note list
+        int lastNoteIndex = DataManager.getInstance().getNotes().size() - 1;
+        item.setEnabled(notePosition < lastNoteIndex);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void moveNext() {
         //save the note before moving to the next note
         saveNote();
@@ -181,6 +192,8 @@ public class NoteActivity extends AppCompatActivity {
         saveOriginalNoteValues();
         //display the notes
         displayNotes(spinnerCourses, noteTitle,noteText);
+        //when at the last note
+        invalidateOptionsMenu();
     }
 
     //save the note when the user hits the back button

@@ -50,30 +50,6 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     private void initializeDisplayContent() {
-//        //add a list of notes
-//        //ref the listView
-//        final ListView listNotes = findViewById(R.id.list_notes);
-//        //get the content to put to the list
-//        List<NoteInfo> notes = DataManager.getInstance().getNotes();
-//        //put the notes in the list view using an adapter
-//        mAdapterNotes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
-//        //associate the adapter with the list view
-//        listNotes.setAdapter(mAdapterNotes);
-//
-//        //set onclickListener
-//        listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //declare a variable of type intent
-//                Intent intent = new Intent(NoteListActivity.this, NoteActivity.class);
-//                //ref the final ListView and get the position of the note
-////                NoteInfo note = (NoteInfo) listNotes.getItemAtPosition(position);
-//                //put extra
-//                intent.putExtra(NoteActivity.NOTE_POSITION, position);
-//                //start the intent
-//                startActivity(intent);
-//            }
-//        });
 
         //get ref to the recycler view
         final RecyclerView recyclerNotes = findViewById(R.id.list_notes);
