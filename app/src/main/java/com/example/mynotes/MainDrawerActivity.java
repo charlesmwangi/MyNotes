@@ -1,22 +1,26 @@
 package com.example.mynotes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
+import androidx.core.view.GravityCompat;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
+import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -43,6 +47,11 @@ public class MainDrawerActivity extends AppCompatActivity
 
             }
         });
+
+        PreferenceManager.setDefaultValues(this,R.xml.general_preferences,false);
+        PreferenceManager.setDefaultValues(this,R.xml.messages_preferences,false);
+        PreferenceManager.setDefaultValues(this,R.xml.sync_preferences,false);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,6 +69,23 @@ public class MainDrawerActivity extends AppCompatActivity
         //let the array adapter know that the data has changed
         //mAdapterNotes.notifyDataSetChanged();
         noteRecyclerAdapter.notifyDataSetChanged();
+        updateNavHeader();
+    }
+
+    private void updateNavHeader() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView textUserName = headerView.findViewById(R.id.text_user_name);
+        TextView textEmailAddress = headerView.findViewById(R.id.text_email_address);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = pref.getString("name_key","Charles");
+        String emailAddress = pref.getString("email_key","charlimwangi@gmail.com");
+        textUserName.setText(userName);
+        textEmailAddress.setText(emailAddress);
+
+
+
     }
 
     private void initializeDisplayContent() {
@@ -132,6 +158,7 @@ public class MainDrawerActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -152,7 +179,8 @@ public class MainDrawerActivity extends AppCompatActivity
             displayCourses();
         } else if (id == R.id.nav_share) {
             // Handle selection
-            handleSelection(R.string.now_share_message);
+            //handleSelection(R.string.now_share_message);
+            handleShare();
         } else if (id == R.id.nav_send) {
             // Handle selection
             handleSelection(R.string.send_message);
@@ -161,6 +189,14 @@ public class MainDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void handleShare() {
+        //display the message
+        View view = findViewById(R.id.list_items);
+        Snackbar.make(view, "Share to "+
+                PreferenceManager.getDefaultSharedPreferences(this).getString("user_favorite_social","")
+                , Snackbar.LENGTH_LONG).show();
     }
 
     private void handleSelection(int message_id) {
